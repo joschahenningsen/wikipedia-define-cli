@@ -12,7 +12,7 @@ Add define as an alias to your bashrc, zshrc, ... Modify this accordingly.
 
 Update your bashrc, zshrc, ... Modify this accordingly.
 
-`source ~/.zshrc`
+`source ~/.bashrc`
 
 ## Usage
 `define stack overflow -de` defines the term stack overflow in german
