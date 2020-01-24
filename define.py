@@ -10,7 +10,7 @@ if(len(sys.argv)<2):
     print("Please provide a search term.")
     exit(-1)
 sys.argv[0]=""
-lang="de" # default language
+lang="en" # default language
 if sys.argv[len(sys.argv)-1].startswith("-"):
     lang = sys.argv[len(sys.argv)-1].replace("-", "")
     sys.argv[len(sys.argv)-1] = ""
