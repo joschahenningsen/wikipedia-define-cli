@@ -1,5 +1,5 @@
 # terminal-define
-Lookup any definition from Wikipedia right inside your terminal. 
+Look up any definition from Wikipedia right inside your terminal. 
 
 ## Installation
 Clone the repository
