@@ -1,6 +1,7 @@
 import json
 import requests
 import sys
+import os
 import re
 import webbrowser
 import colorama
@@ -10,7 +11,22 @@ if(len(sys.argv) < 2):
     print("Please provide a search term.")
     exit(-1)
 sys.argv[0] = ""
-lang = "en" # default language
+
+userhome = os.getenv("HOME")
+stdlangf = open(userhome + "/terminal-define/stdlang", "r")
+lang = stdlangf.read() # default language
+stdlangf.close()
+
+if sys.argv[1] == "-setlang":
+    if len(sys.argv) != 3:
+        print("please provide a language code")
+        exit(-1)
+    else:
+        stdlangf = open(userhome + "/terminal-define/stdlang", "w")
+        stdlangf.write(sys.argv[2])
+        print("New language was set.")
+        exit()
+
 if sys.argv[len(sys.argv)-1].startswith("-"):
     lang = sys.argv[len(sys.argv)-1].replace("-", "")
     sys.argv[len(sys.argv)-1] = ""
