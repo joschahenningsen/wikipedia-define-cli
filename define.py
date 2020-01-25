@@ -61,12 +61,12 @@ if(result):
     else:
         page_id = result["query"]["search"][0]["pageid"]
         article_result = get_request(api_url_base_retrieve, page_id)
-        title = cleanhtml(result["query"]["search"][0]["title"]).replace(" ", "_")
+        title = cleanhtml(result["query"]["search"][0]["title"])
         print(Fore.BLUE+title+":")
         print(Style.RESET_ALL)
         pretty_print(cleanhtml(article_result["query"]["pages"][str(page_id)]["extract"]))
         if(input(Fore.BLUE+"(o): open \n"+Style.RESET_ALL)=="o"):
-            webbrowser.open("https://"+lang+".wikipedia.org/wiki/"+title)
+            webbrowser.open("https://"+lang+".wikipedia.org/wiki/"+title.replace(" ", "_"))
         exit()
 print("Something went wrong")
 exit(-1)
