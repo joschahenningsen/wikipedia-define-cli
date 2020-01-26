@@ -18,3 +18,5 @@ Update your bashrc, zshrc, ... Modify this accordingly.
 `define stack overflow -de` defines the term stack overflow in german
 
 `define github` defines the term github in english
+
+`define -setlang de` sets the standard language to german
