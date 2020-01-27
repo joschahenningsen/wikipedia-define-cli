@@ -4,11 +4,11 @@ Look up any definition from Wikipedia right inside your terminal.
 ## Installation
 Clone the repository
 
-`git clone https://github.com/joschahenningsen/terminal-define ~/terminal-define`
+`git clone https://github.com/joschahenningsen/wikipedia-define-cli ~/wikipedia-define-cli`
 
 Add define as an alias to your bashrc, zshrc, ... Modify this accordingly.
 
-`echo 'alias define="python3 ~/terminal-define/define.py"'>>~/.bashrc`
+`echo 'alias define="python3 ~/wikipedia-define-cli/define.py"'>>~/.bashrc`
 
 Update your bashrc, zshrc, ... Modify this accordingly.
 
