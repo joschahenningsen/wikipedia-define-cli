@@ -10,7 +10,7 @@ from colorama import Fore, Style
 # Loads the preferred language from disk
 def load_lang():
     userhome = os.getenv("HOME")
-    stdlangf = open(userhome + "/terminal-define/stdlang", "r")
+    stdlangf = open(userhome + "/wikipedia-define-cli/stdlang", "r")
     lang = stdlangf.read() # default language
     stdlangf.close()
 
@@ -73,7 +73,7 @@ def setup():
             exit(-1)
         else:
             userhome = os.getenv("HOME")
-            stdlangf = open(userhome + "/terminal-define/stdlang", "w")
+            stdlangf = open(userhome + "/wikipedia-define-cli/stdlang", "w")
             stdlangf.write(sys.argv[2])
             print("New language was set.")
             exit()
