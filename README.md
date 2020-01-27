@@ -1,4 +1,4 @@
-# terminal-define
+# wikipedia-define-cli
 Look up any definition from Wikipedia right inside your terminal. 
 
 ## Installation
