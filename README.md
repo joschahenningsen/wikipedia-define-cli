@@ -14,6 +14,8 @@ Update your bashrc, zshrc, ... Modify this accordingly.
 
 `source ~/.bashrc`
 
+You might need to install colorama using `pip3 install colorama`
+
 ## Usage
 `define stack overflow -de` defines the term stack overflow in german
 
