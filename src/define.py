@@ -46,7 +46,7 @@ def get_request(api_url, custom_headers):
         return None
 
 
-def construct_search(term, lang, id=""):
+def construct_search(term="", lang="en", id=""):
     api_url_base_search = "https://" + lang + ".wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=intitle:" + term
     api_url_base_retrieve = "https://" + lang + ".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&pageids=" + str(
         id)
@@ -80,7 +80,7 @@ def cli(term, language):
                     exit(-1)
 
         page_id = result["query"]["search"][0]["pageid"]
-        search = construct_search(language, page_id)
+        search = construct_search(lang=language, id=page_id)
         article_result = get_request(search[1], search[2])
         title = clean_html(result["query"]["search"][0]["title"])
 
