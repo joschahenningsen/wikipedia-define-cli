@@ -1,23 +1,20 @@
 import json
-import os
 import re
-import sys
 import webbrowser
-import click
 
+import click
 import requests
 from colorama import Fore, Style
 
-from src import config_util
+import config_util
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 # Removes all tags that would only be rendered in html
 def clean_html(raw_html):
-    cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
-    clean_text = re.sub(cleanr, '', raw_html)
-    return clean_text
+    clean_regex = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+    return re.sub(clean_regex, '', raw_html)
 
 
 # prints the result, limited to about 75 characters and only the first paragraph
@@ -49,33 +46,12 @@ def get_request(api_url, custom_headers):
         return None
 
 
-def construct_search(lang, id=""):
-    searchterm = " ".join(sys.argv)
-    searchterm = searchterm[1:len(searchterm)]
-    api_url_base_search = "https://" + lang + ".wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=intitle:" + searchterm
+def construct_search(term, lang, id=""):
+    api_url_base_search = "https://" + lang + ".wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=intitle:" + term
     api_url_base_retrieve = "https://" + lang + ".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&pageids=" + str(
         id)
     headers = {'Content-Type': 'application/json'}
     return [api_url_base_search, api_url_base_retrieve, headers]
-
-
-# checks if provided arguments are valid
-def setup():
-    if len(sys.argv) < 2:
-        print("Please provide a search term.")
-        exit(-1)
-    sys.argv[0] = ""
-
-    if sys.argv[1] == "-setlang":
-        if len(sys.argv) != 3:
-            print("please provide a language code")
-            exit(-1)
-        else:
-            userhome = os.getenv("HOME")
-            stdlangf = open(userhome + "/wikipedia-define-cli/stdlang", "w")
-            stdlangf.write(sys.argv[2])
-            print("New language was set.")
-            exit()
 
 
 # todo: this needs to be cleaned up
@@ -83,8 +59,8 @@ def setup():
 @click.argument('term', nargs=-1)
 @click.option('--language', '-l', default=config_util.get_default_lang(), help='Language of the definition.')
 def cli(term, language):
-    setup()
-    search = construct_search(language)
+    term = " ".join(term)
+    search = construct_search(term, language)
     result = get_request(search[0], search[2])
     if result:
         num_rows = result["query"]["searchinfo"]["totalhits"]
@@ -92,8 +68,8 @@ def cli(term, language):
             if language == "en":
                 print("No results match your query.")
                 exit(-1)
-            else:  # the default language is not english, perhaps we can find an english article instad
-                search = construct_search("en")
+            else:  # the default language is not english, perhaps we can find an english article instead
+                search = construct_search(term, "en")
                 result = get_request(search[0], search[2])
                 if result and result["query"]["searchinfo"]["totalhits"] != 0:
                     language = "en"
