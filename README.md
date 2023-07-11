@@ -2,23 +2,17 @@
 Look up any definition from Wikipedia right inside your terminal. 
 
 ## Installation
-Clone the repository
 
-`git clone https://github.com/joschahenningsen/wikipedia-define-cli ~/wikipedia-define-cli`
-
-Add define as an alias to your bashrc, zshrc, ... Modify this accordingly.
-
-`echo 'alias define="python3 ~/wikipedia-define-cli/define.py"'>>~/.bashrc`
-
-Update your bashrc, zshrc, ... Modify this accordingly.
-
-`source ~/.bashrc`
-
-You might need to install colorama using `pip3 install colorama`
+Just use `pip install git+https://github.com/joschahenningsen/wikipedia-define-cli` to install the package.
 
 ## Usage
-`define stack overflow -de` defines the term stack overflow in german
 
-`define github` defines the term github in english
+Just type `wikipedia-define-cli` followed by the word you want to look up.
 
-`define -setlang de` sets the standard language to german
+```text
+Usage: wikipedia-define-cli [OPTIONS] [TERM]...
+
+Options:
+  -l, --language TEXT  Language of the definition.
+  -h, --help           Show this message and exit.
+```
