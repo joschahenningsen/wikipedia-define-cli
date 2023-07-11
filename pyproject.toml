@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=65.5.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wikipedia-define-cli"
+version = "0.1.0"
+authors = [
+    { name = "Joscha Henningsen", email = "joscha.henningsen@tum.de" },
+    { name = "Simon Kreuzer", email = "mail@monsi.org" }
+]
+description = "Command line tool to get the Wikipedia definition for a search term."
+readme = "README.md"
+
+requires-python = ">=3.5"
