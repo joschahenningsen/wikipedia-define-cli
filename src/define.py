@@ -3,23 +3,14 @@ import os
 import re
 import sys
 import webbrowser
+import click
 
 import requests
 from colorama import Fore, Style
 
+from src import config_util
 
-# Loads the preferred language from disk
-def load_lang():
-    userhome = os.getenv("HOME")
-    stdlangf = open(userhome + "/wikipedia-define-cli/stdlang", "r")
-    lang = stdlangf.read()  # default language
-    stdlangf.close()
-
-    if sys.argv[len(sys.argv) - 1].startswith("-"):
-        lang = sys.argv[len(sys.argv) - 1].replace("-", "")
-        sys.argv[len(sys.argv) - 1] = ""
-
-    return lang
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 # Removes all tags that would only be rendered in html
@@ -88,22 +79,24 @@ def setup():
 
 
 # todo: this needs to be cleaned up
-if __name__ == '__main__':
-    lang = load_lang()
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.argument('term', nargs=-1)
+@click.option('--language', '-l', default=config_util.get_default_lang(), help='Language of the definition.')
+def cli(term, language):
     setup()
-    search = construct_search(lang)
+    search = construct_search(language)
     result = get_request(search[0], search[2])
     if result:
         num_rows = result["query"]["searchinfo"]["totalhits"]
         if num_rows < 1:
-            if lang == "en":
+            if language == "en":
                 print("No results match your query.")
                 exit(-1)
             else:  # the default language is not english, perhaps we can find an english article instad
                 search = construct_search("en")
                 result = get_request(search[0], search[2])
                 if result and result["query"]["searchinfo"]["totalhits"] != 0:
-                    lang = "en"
+                    language = "en"
                     print(
                         Fore.RED + "There was no article in your preferred language, but this one in english might help:" + Style.RESET_ALL)
                 else:
@@ -111,7 +104,7 @@ if __name__ == '__main__':
                     exit(-1)
 
         page_id = result["query"]["search"][0]["pageid"]
-        search = construct_search(lang, page_id)
+        search = construct_search(language, page_id)
         article_result = get_request(search[1], search[2])
         title = clean_html(result["query"]["search"][0]["title"])
 
@@ -119,7 +112,11 @@ if __name__ == '__main__':
         pretty_print(clean_html(article_result["query"]["pages"][str(page_id)]["extract"]))
 
         if input(Fore.BLUE + "(o): open \n" + Style.RESET_ALL) == "o":
-            webbrowser.open("https://" + lang + ".wikipedia.org/wiki/" + title.replace(" ", "_"))
+            webbrowser.open("https://" + language + ".wikipedia.org/wiki/" + title.replace(" ", "_"))
         exit()
     print("Something went wrong")
     exit(-1)
+
+
+if __name__ == '__main__':
+    cli()
